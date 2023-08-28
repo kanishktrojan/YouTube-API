@@ -1,15 +1,4 @@
 const app = require("express")();
-const cors = require('cors');
-
-app.use(cors(
-  {
-    origin: ["https://kaniflix.vercel.app"],
-    methods: ["POST", "GET"],
-    credentials: true
-  }
-));
-
-
 let chrome = {};
 let puppeteer;
 
