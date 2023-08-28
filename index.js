@@ -11,10 +11,21 @@ if (process.env.AWS_LAMBDA_FUNCTION_VERSION) {
 
 let browser;
 let page;
+let options = {};
+
+if (process.env.AWS_LAMBDA_FUNCTION_VERSION) {
+  options = {
+    args: [...chrome.args, "--hide-scrollbars", "--disable-web-security"],
+    defaultViewport: chrome.defaultViewport,
+    executablePath: await chrome.executablePath,
+    headless: true,
+    ignoreHTTPSErrors: true,
+  };
+}
 
 // Create the browser instance and page outside the route handler
 (async () => {
-  browser = await puppeteer.launch({ headless: true, executablePath: executablePath(), args: ['--no-sandbox'] });
+  browser = await puppeteer.launch(options);
   page = await browser.newPage();
 })();
 
@@ -60,14 +71,3 @@ app.listen(process.env.PORT || 3000, () => {
 module.exports = app;
 
 
-// let options = {};
-
-// if (process.env.AWS_LAMBDA_FUNCTION_VERSION) {
-//   options = {
-//     args: [...chrome.args, "--hide-scrollbars", "--disable-web-security"],
-//     defaultViewport: chrome.defaultViewport,
-//     executablePath: await chrome.executablePath,
-//     headless: true,
-//     ignoreHTTPSErrors: true,
-//   };
-// }
