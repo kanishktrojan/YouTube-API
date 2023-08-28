@@ -13,20 +13,21 @@ let browser;
 let page;
 let options = {};
 
-if (process.env.AWS_LAMBDA_FUNCTION_VERSION) {
-  options = {
-    args: [...chrome.args, "--hide-scrollbars", "--disable-web-security"],
-    defaultViewport: chrome.defaultViewport,
-    executablePath: await chrome.executablePath,
-    headless: true,
-    ignoreHTTPSErrors: true,
-  };
-}
 
 // Create the browser instance and page outside the route handler
 (async () => {
+  if (process.env.AWS_LAMBDA_FUNCTION_VERSION) {
+    options = {
+      args: [...chrome.args, "--hide-scrollbars", "--disable-web-security"],
+      defaultViewport: chrome.defaultViewport,
+      executablePath: await chrome.executablePath,
+      headless: true,
+      ignoreHTTPSErrors: true,
+    };
+  }
   browser = await puppeteer.launch(options);
   page = await browser.newPage();
+  
 })();
 
 app.get('/preview-video', async (req, res) => {
