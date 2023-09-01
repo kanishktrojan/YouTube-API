@@ -41,7 +41,7 @@ app.get('/preview-video', async (req, res) => {
     await page.goto(`https://www.youtube.com/results?search_query=${query + '+trailer'}`, { timeout: 999999999 });
 
     // Wait for the search results to load
-    // await page.waitForSelector('#contents span#text');
+    await page.waitForSelector('#contents span#text', { timeout: 999999999 });
 
     // Extract the video ID, duration, and channel name of the first video in the search results
     const videoData = await page.$eval('#contents ytd-video-renderer a#thumbnail', (element) => {
